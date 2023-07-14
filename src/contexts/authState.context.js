@@ -2,24 +2,35 @@ import { createContext, useEffect, useState } from "react";
 import { getLocalStorageLoginToken, removeLocalStorageLoginToken } from "../utils/localStorage.utils";
 import { LOCAL_STORAGE_LOGIN_TOKEN } from "../constants/constants";
 import { useNavigate } from "react-router-dom";
+import AuthService from "../services/auth.service";
 
 const AuthState = createContext();
 
-export const AuthStateProvider = ({children}) => {
+export const AuthStateProvider = ({ children }) => {
 
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [loggedUser, setLoggedUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [myProfile, setMyProfile] = useState(null);
+    const [profile, setProfile] = useState(null);
     const navigate = useNavigate();
-    
-    useEffect(()=> {
-        const token = getLocalStorageLoginToken(LOCAL_STORAGE_LOGIN_TOKEN);
-        if(!token){
-            navigate('/login');
-        }else{
-            navigate('/');
-        }
+
+    useEffect(() => {
+        (async () => {
+            const token = getLocalStorageLoginToken(LOCAL_STORAGE_LOGIN_TOKEN);
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+
+            if (LOCAL_STORAGE_LOGIN_TOKEN in localStorage) {
+                setIsLoggedIn(true);
+                const res = await AuthService.validateToken(token);
+                setMyProfile(res);
+                setProfile(res);
+            }
+        })()
     }, []);
 
     const logout = () => {
@@ -28,7 +39,7 @@ export const AuthStateProvider = ({children}) => {
         navigate("/login");
     }
 
-    return <AuthState.Provider value={{ passwordVisible, setPasswordVisible, loggedUser, setLoggedUser, errorMessage, setErrorMessage, logout}}>{children}</AuthState.Provider>
+    return <AuthState.Provider value={{ passwordVisible, setPasswordVisible, loggedUser, setLoggedUser, errorMessage, setErrorMessage, myProfile, setMyProfile,profile, setProfile, logout }}>{children}</AuthState.Provider>
 }
 
 export default AuthState;

@@ -4,8 +4,8 @@ import SendIcon from '@mui/icons-material/Send';
 
 const ChatMessage = () => {
     return (
-        <Grid item xs={7} marginTop={9}>
-            <List>
+        <Grid item xs={7}>
+            <List className="messageArea">
                 <ListItem key="1" className="rightSideChat">
                     <Grid container className="chat-bubble chat-bubble--right">
                         <Grid item xs={12}>

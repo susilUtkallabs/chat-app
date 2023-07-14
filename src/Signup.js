@@ -42,7 +42,6 @@ const Signup = () => {
         onSubmit: async (values, action) => {
             try{
                 const res = await AuthService.signUpApi(values);
-                console.log('Signup data', res);
                 navigate('/login');
                 action.resetForm();
             }catch(error){

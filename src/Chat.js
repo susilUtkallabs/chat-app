@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Header from "./Header";
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import { getLocalStorageLoginToken } from "./utils/localStorage.utils";
 import { LOCAL_STORAGE_LOGIN_TOKEN } from "./constants/constants";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,9 @@ const Chat = () => {
             <Header />
             <Grid container>
                 <ChatList />
+                {/* <Divider orientation="vertical" flexItem /> */}
                 <ChatMessage />
+                {/* <Divider orientation="vertical" flexItem /> */}
                 <ChatProfile />
             </Grid>
         </>

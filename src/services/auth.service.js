@@ -21,5 +21,18 @@ const loginApi = async (data) => {
     }
 }
 
+const validateToken = async (token) => {
+    try{
+        const res = await axios.get(`/auth/validatetoken`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+        });
+        return res.data;    
+    }catch(error){
+        throw error.response.data.error;
+    }
+}
 
-export default {signUpApi , loginApi};
+
+export default {signUpApi , loginApi, validateToken};
