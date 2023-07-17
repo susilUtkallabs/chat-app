@@ -14,6 +14,8 @@ export const AuthStateProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [myProfile, setMyProfile] = useState(null);
     const [profile, setProfile] = useState(null);
+    const [showMessage, setShowMessage] = useState("");
+    const [conversations, setConversations] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,7 +41,14 @@ export const AuthStateProvider = ({ children }) => {
         navigate("/login");
     }
 
-    return <AuthState.Provider value={{ passwordVisible, setPasswordVisible, loggedUser, setLoggedUser, errorMessage, setErrorMessage, myProfile, setMyProfile,profile, setProfile, logout }}>{children}</AuthState.Provider>
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setErrorMessage("");
+        }, 3000);
+        return () => clearTimeout(timeout);
+    }, [errorMessage]);
+
+    return <AuthState.Provider value={{ passwordVisible, setPasswordVisible, loggedUser, setLoggedUser, errorMessage, setErrorMessage, myProfile, setMyProfile,profile, setProfile,showMessage, setShowMessage,conversations, setConversations, logout }}>{children}</AuthState.Provider>
 }
 
 export default AuthState;

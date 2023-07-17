@@ -1,58 +1,73 @@
-import React from "react";
-import { Divider, Fab, Grid, List, ListItem, ListItemText, TextField } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import { Divider, Fab, Grid, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
+import AuthState from "./contexts/authState.context";
+import MessageService from '../src/services/message.service';
 
 const ChatMessage = () => {
+
+    const { showMessage, myProfile } = useContext(AuthState);
+    const [sendMessage, setSendMessage] = useState("");
+
+    const sendMessageSubmit = async (e) => {
+        e.preventDefault();
+        const res = await MessageService.postMessages(showMessage.messages[0].conversation_group_id, sendMessage);
+        setSendMessage("");
+    }
+
+    const formatedDate = (dateString) => {
+       return new Date(dateString).toLocaleString(
+            "en-US",
+              {
+                hour: '2-digit', 
+                minute: '2-digit'
+              }
+          );
+    } 
+
     return (
         <Grid item xs={7}>
             <List className="messageArea">
-                <ListItem key="1" className="rightSideChat">
-                    <Grid container className="chat-bubble chat-bubble--right">
-                        <Grid item xs={12}>
-                            <ListItemText align="right" primary="Hey man, What's up ?"></ListItemText>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ListItemText align="right" secondary="09:30"></ListItemText>
-                        </Grid>
-                    </Grid>
-                </ListItem>
-                <ListItem key="2">
-                    <Grid container className="chat-bubble chat-bubble--left">
-                        <Grid item xs={12}>
-                            <ListItemText align="left" primary="Hey, Iam Good! What about you ?"></ListItemText>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ListItemText align="left" secondary="09:31"></ListItemText>
-                        </Grid>
-                    </Grid>
-                </ListItem>
-                <ListItem key="3" className="rightSideChat">
-                    <Grid container className="chat-bubble chat-bubble--right">
-                        <Grid item xs={12}>
-                            <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ListItemText align="right" secondary="10:30"></ListItemText>
-                        </Grid>
-                    </Grid>
-                </ListItem>
+                {
+                    showMessage !== ""
+                        ?
+                        showMessage.messages.map((item) => (
+                            <ListItem key={item._id} className={item.sender_id == myProfile?._id ? "rightSideChat" : ""}>
+                                <Grid container className={item.sender_id == myProfile?._id ? "chat-bubble chat-bubble--right" : "chat-bubble chat-bubble--left"}>
+                                    <Grid item xs={12}>
+                                        <ListItemText align={item.sender_id == myProfile?._id ? "right" : "left"} primary={item.text}></ListItemText>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <ListItemText align={item.sender_id == myProfile?._id ? "right" : "left"} secondary={ formatedDate(item.created_at)}></ListItemText>
+                                    </Grid>
+                                </Grid>
+                            </ListItem>
+                        ))
+                        :
+                        <Typography textAlign={'center'}>Select a chat</Typography>
+                }
             </List>
             <Divider />
-            <Grid container style={{ padding: '20px' }}>
-                <Grid item xs={11}>
-                    <TextField
-                        placeholder="Type Something"
-                        InputProps={{
-                            style: {
-                                borderRadius: "40px",
-                            }
-                        }}
-                        fullWidth />
+
+            <form onSubmit={sendMessageSubmit}>
+                <Grid container style={{ padding: '20px' }}>
+                    <Grid item xs={11}>
+                        <TextField
+                            placeholder="Type Something"
+                            InputProps={{
+                                style: {
+                                    borderRadius: "40px",
+                                }
+                            }}
+                            value={sendMessage}
+                            onChange={(e) => setSendMessage(e.target.value)}
+                            fullWidth required />
+                    </Grid>
+                    <Grid xs={1} align="right">
+                        <Fab color="primary" aria-label="add" type="submit"><SendIcon /></Fab>
+                    </Grid>
                 </Grid>
-                <Grid xs={1} align="right">
-                    <Fab color="primary" aria-label="add"><SendIcon /></Fab>
-                </Grid>
-            </Grid>
+            </form>
         </Grid>
     )
 }

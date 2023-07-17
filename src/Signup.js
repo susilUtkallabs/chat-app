@@ -50,13 +50,6 @@ const Signup = () => {
         },
     });
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setErrorMessage("");
-        }, 3000);
-        return () => clearTimeout(timeout);
-    }, [errorMessage]);
-
     return (
         <div className="container">
             <div className="top"></div>

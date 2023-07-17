@@ -1,27 +1,29 @@
-import { Avatar, Divider, Grid, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Avatar, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import AuthState from "./contexts/authState.context";
 import Conversation from '../src/services/conversation.service';
+import MessageService from '../src/services/message.service';
 
 const ChatList = () => {
-    
-    const {myProfile} = useContext(AuthState);
 
-    const [conversations, setConversations] = useState(null);
+    const { myProfile, showMessage, setShowMessage,conversations, setConversations, errorMessage, setErrorMessage} = useContext(AuthState);
 
-    useEffect(()=>{
+    const [selectedChatIndex, setSelectedChatIndex] = useState("");
+    const [randomImage, setRandomImage] = useState(null);
+
+    useEffect(() => {
         //iife
-        (async()=>{
-            const res = await Conversation.getConversation(1, 100);
-            res.map((item)=>{
-                item.users.filter((removeMyId)=>{
-                   return removeMyId._id !== myProfile?._id;
-                });
-            });
+        (async () => {
+            const res = await Conversation.getConversation(1, 100, selectedChatIndex);
             setConversations(res);
         })()
     }, []);
-    console.log(conversations);
+
+    const setChatIndex = async (conversationGroupId)=>{
+        const res = await MessageService.getMessage(1, 100, conversationGroupId);
+        setShowMessage(res);
+    }   
+
     return (
         <Grid item xs={2} className="chatSection">
             <List>
@@ -39,35 +41,20 @@ const ChatList = () => {
             <Divider /> */}
             <List>
                 {
-                    conversations?.map((conversation, index)=>{
-                        <ListItem button key={index}>
-                            <ListItemIcon>
-                                <Avatar alt={conversation?.name} src="https://material-ui.com/static/images/avatar/1.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary={conversation?.name}>{conversation?.name}</ListItemText>
-                            <ListItemText secondary="online" align="right"></ListItemText>
-                        </ListItem>
+                    conversations?.map((conversation, index) => {
+                        const chatList = conversation.users?.find((user) => user?._id !== myProfile?._id)
+                        
+                        if (chatList == "") return <Typography>No friends found</Typography>
+                            return (
+                                <ListItem button key={index} onClick={()=>setChatIndex(conversation?._id)}>
+                                    <ListItemIcon>
+                                        <Avatar alt={chatList?.name} src="https://material-ui.com/static/images/avatar/1.jpg" />
+                                    </ListItemIcon>
+                                    <ListItemText primary={chatList?.name}>{chatList?.name}</ListItemText>
+                                </ListItem>
+                            )
                     })
                 }
-                {/* <ListItem button key="Asit">
-                    <ListItemIcon>
-                        <Avatar alt="Asit Bhai" src="https://material-ui.com/static/images/avatar/1.jpg" />
-                    </ListItemIcon>
-                    <ListItemText primary="Asit Bhai">Asit Bhai</ListItemText>
-                    <ListItemText secondary="online" align="right"></ListItemText>
-                </ListItem>
-                <ListItem button key="Amrit">
-                    <ListItemIcon>
-                        <Avatar alt="Amrit" src="https://material-ui.com/static/images/avatar/6.jpg" />
-                    </ListItemIcon>
-                    <ListItemText primary="Amrit">Amrit</ListItemText>
-                </ListItem>
-                <ListItem button key="Arnabjyoti">
-                    <ListItemIcon>
-                        <Avatar alt="Arnabjyoti Roy" src="https://material-ui.com/static/images/avatar/2.jpg" />
-                    </ListItemIcon>
-                    <ListItemText primary="Arnabjyoti Roy">Arnabjyoti Roy</ListItemText>
-                </ListItem> */}
             </List>
         </Grid>
     )

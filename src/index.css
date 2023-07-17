@@ -149,7 +149,7 @@ body {
 }
 
 .messageArea{
-  height: 70vh;
+  height: 78vh;
   overflow-y: scroll;
 }
 
@@ -158,9 +158,9 @@ body {
 }
 
 .chat-bubble {
-  padding: 10px 14px;
+  padding: 0px 14px;
   background: #eee;
-  margin: 10px 30px;
+  margin: 0px 30px;
   border-radius: 9px;
   position: relative;
   animation: fadeIn 1s ease-in;

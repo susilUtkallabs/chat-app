@@ -17,11 +17,6 @@ const Login = () => {
 
     const { passwordVisible, setPasswordVisible, errorMessage, setErrorMessage, setLoggedUser } = useContext(AuthState);
 
-    // const [login, setLogin] = useState({
-    //     email : "",
-    //     password : ""
-    // });
-
     const navigate = useNavigate();
 
     const handleClickShowPassword = () => {
@@ -42,12 +37,7 @@ const Login = () => {
         },
     });
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setErrorMessage("");
-        }, 3000);
-        return () => clearTimeout(timeout);
-    }, [errorMessage]);
+    
 
     return (
         <div className="container">

@@ -7,7 +7,7 @@ const signUpApi = async (data) => {
         const res = await axios.post(`/auth/signUp`, data);
         return res.data;
     }catch(error){
-        throw error.response.data.error;
+        throw error.response.data.message;
     }
 }
 
@@ -17,7 +17,7 @@ const loginApi = async (data) => {
         setLocalStorageLoginToken(res.data.token);
         return res.data;    
     }catch(error){
-        throw error.response.data.error;
+        throw error.response.data.message;
     }
 }
 

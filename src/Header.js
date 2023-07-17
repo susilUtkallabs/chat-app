@@ -50,8 +50,7 @@ import { useNavigate } from "react-router-dom";
                                     mr: 2,
                                     display: { xs: 'none', md: 'flex' },
                                     fontFamily: 'monospace',
-                                    fontWeight: 700,
-                                    letterSpacing: '.3rem',
+                                    fontWeight: 900,
                                     color: 'inherit',
                                     textDecoration: 'none',
                                 }}

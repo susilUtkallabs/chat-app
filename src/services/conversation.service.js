@@ -11,22 +11,24 @@ const getConversation = async (page, limit) => {
         });
         return response.data.conversations;
     }catch(error){
-        return error;
+        return error.response.data.error;
     }
 }
 
-const postConversation = async (page, limit) => {
+const postConversation = async (users) => {
     try{
-        const response = await axios.get(`/conversations`, {
+        const response = await axios.post(`/conversations`,
+            {
+                type : "personal",
+                users: [users]
+            }, {
             headers: {
               Authorization: `Bearer ${getLocalStorageLoginToken(LOCAL_STORAGE_LOGIN_TOKEN)}`,
-            },
-            page : page,
-            limit: limit
+            }
         });
         return response.data;
     }catch(error){
-        return error;
+        return error.response.data;
     }
 }
 
