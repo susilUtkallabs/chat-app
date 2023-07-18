@@ -79,13 +79,10 @@ const ChatProfile = () => {
                     ?
                     <Grid container marginTop={3}>
                         <Grid item xs={4} sx={{ margin: 'auto', textAlign: 'center' }}>
-                            <form onSubmit={ createFriend }>
-                                <IconButton color="primary" type="submit">
-                                    <MessageIcon style={{ fontSize: '4rem' }} />
-                                    <TextField type="hidden" value={newFriend} onChange={newFriend} />
-                                </IconButton>
-                                <Typography variant="h6" className="header-message">Chat</Typography>
-                            </form>
+                            <IconButton color="primary" onClick={createFriend}>
+                                <MessageIcon style={{ fontSize: '4rem' }} />
+                            </IconButton>
+                            <Typography variant="h6" className="header-message">Chat</Typography>
                         </Grid>
                         <Divider orientation="vertical" flexItem />
                         <Grid item xs={4} sx={{ margin: 'auto', textAlign: 'center' }}>

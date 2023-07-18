@@ -6,10 +6,9 @@ import MessageService from '../src/services/message.service';
 
 const ChatList = () => {
 
-    const { myProfile, showMessage, setShowMessage,conversations, setConversations, errorMessage, setErrorMessage} = useContext(AuthState);
+    const { myProfile, setShowMessage,conversations, setConversations} = useContext(AuthState);
 
     const [selectedChatIndex, setSelectedChatIndex] = useState("");
-    const [randomImage, setRandomImage] = useState(null);
 
     useEffect(() => {
         //iife
@@ -40,21 +39,21 @@ const ChatList = () => {
                     </Grid>
             <Divider /> */}
             <List>
-                {
-                    conversations?.map((conversation, index) => {
-                        const chatList = conversation.users?.find((user) => user?._id !== myProfile?._id)
-                        
-                        if (chatList == "") return <Typography>No friends found</Typography>
-                            return (
-                                <ListItem button key={index} onClick={()=>setChatIndex(conversation?._id)}>
-                                    <ListItemIcon>
-                                        <Avatar alt={chatList?.name} src="https://material-ui.com/static/images/avatar/1.jpg" />
-                                    </ListItemIcon>
-                                    <ListItemText primary={chatList?.name}>{chatList?.name}</ListItemText>
-                                </ListItem>
-                            )
-                    })
-                }
+            {
+                conversations?.map((conversation, index) => {
+                    const chatList = conversation.users?.find((user) => user?._id !== myProfile?._id)
+                    
+                    if (!chatList) return null
+                    return (
+                        <ListItem button key={index} onClick={()=>setChatIndex(conversation?._id)}>
+                            <ListItemIcon>
+                                <Avatar alt={chatList?.name} src="https://material-ui.com/static/images/avatar/1.jpg" />
+                            </ListItemIcon>
+                            <ListItemText primary={chatList?.name}>{chatList?.name}</ListItemText>
+                        </ListItem>
+                    )
+                })
+            }
             </List>
         </Grid>
     )
