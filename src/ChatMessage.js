@@ -3,17 +3,13 @@ import { Divider, Fab, Grid, List, ListItem, ListItemText, TextField, Typography
 import SendIcon from '@mui/icons-material/Send';
 import AuthState from "./contexts/authState.context";
 import MessageService from '../src/services/message.service';
+import MessageState from "./contexts/messageState.context";
 
 const ChatMessage = () => {
 
-    const { showMessage, myProfile } = useContext(AuthState);
-    const [sendMessage, setSendMessage] = useState("");
-
-    const sendMessageSubmit = async (e) => {
-        e.preventDefault();
-        const res = await MessageService.postMessages(showMessage.messages[0].conversation_group_id, sendMessage);
-        setSendMessage("");
-    }
+    const { myProfile } = useContext(AuthState);
+    const { messages, setMessages, showMessage,setShowMessage ,selectedIndex ,sendMessageSubmit, sendMessage, setSendMessage} = useContext(MessageState);
+    
 
     const formatedDate = (dateString) => {
        return new Date(dateString).toLocaleString(
@@ -31,7 +27,7 @@ const ChatMessage = () => {
                 {
                     showMessage !== ""
                         ?
-                        showMessage.messages.map((item) => (
+                        showMessage?.map((item) => (
                             <ListItem key={item._id} className={item.sender_id == myProfile?._id ? "rightSideChat" : ""}>
                                 <Grid container className={item.sender_id == myProfile?._id ? "chat-bubble chat-bubble--right" : "chat-bubble chat-bubble--left"}>
                                     <Grid item xs={12}>

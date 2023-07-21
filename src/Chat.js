@@ -16,9 +16,7 @@ const Chat = () => {
             <Header />
             <Grid container>
                 <ChatList />
-                {/* <Divider orientation="vertical" flexItem /> */}
                 <ChatMessage />
-                {/* <Divider orientation="vertical" flexItem /> */}
                 <ChatProfile />
             </Grid>
         </>

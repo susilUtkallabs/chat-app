@@ -11,11 +11,9 @@ export const AuthStateProvider = ({ children }) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [loggedUser, setLoggedUser] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [myProfile, setMyProfile] = useState(null);
     const [profile, setProfile] = useState(null);
-    const [showMessage, setShowMessage] = useState("");
-    const [conversations, setConversations] = useState([]);
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,7 +25,6 @@ export const AuthStateProvider = ({ children }) => {
             }
 
             if (LOCAL_STORAGE_LOGIN_TOKEN in localStorage) {
-                setIsLoggedIn(true);
                 const res = await AuthService.validateToken(token);
                 setMyProfile(res);
                 setProfile(res);
@@ -48,7 +45,7 @@ export const AuthStateProvider = ({ children }) => {
         return () => clearTimeout(timeout);
     }, [errorMessage]);
 
-    return <AuthState.Provider value={{ passwordVisible, setPasswordVisible, loggedUser, setLoggedUser, errorMessage, setErrorMessage, myProfile, setMyProfile,profile, setProfile,showMessage, setShowMessage,conversations, setConversations, logout }}>{children}</AuthState.Provider>
+    return <AuthState.Provider value={{ passwordVisible, setPasswordVisible, loggedUser, setLoggedUser, errorMessage, setErrorMessage, myProfile, setMyProfile,profile, setProfile, logout }}>{children}</AuthState.Provider>
 }
 
 export default AuthState;
