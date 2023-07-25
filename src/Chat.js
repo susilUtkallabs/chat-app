@@ -7,20 +7,18 @@ import { useNavigate } from "react-router-dom";
 import ChatList from "./ChatList";
 import ChatMessage from "./ChatMessage";
 import ChatProfile from "./ChatProfile";
-import AuthState from "./contexts/authState.context";
 
 const Chat = () => {
-    
-    return (
-        <>
-            <Header />
-            <Grid container>
-                <ChatList />
-                <ChatMessage />
-                <ChatProfile />
-            </Grid>
-        </>
-    )
-}
+  return (
+    <>
+      <Header />
+      <Grid container>
+        <ChatList />
+        <ChatMessage />
+        <ChatProfile />
+      </Grid>
+    </>
+  );
+};
 
 export default Chat;

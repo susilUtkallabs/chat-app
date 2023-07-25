@@ -15,7 +15,6 @@ export const MessageStateProvider = ({ children }) => {
   const [showMessage, setShowMessage] = useState([]);
   const [sendMessage, setSendMessage] = useState("");
   const [socketInstance, setSocketInstance] = useState(null);
-  const { myProfile } = useContext(AuthState);
 
   useEffect(() => {
     const socket = io("https://ping-ul-susil-backend.loca.lt", {
@@ -38,8 +37,8 @@ export const MessageStateProvider = ({ children }) => {
     socket.on("server-messages", (data) => {
       const response = JSON.parse(data);
       setMessages((prev) => {
-        const temp = {...prev};
-        if(temp[response.conversation_group_id]){
+        const temp = { ...prev };
+        if (temp[response.conversation_group_id]) {
           temp[response.conversation_group_id].messages.push(response);
         }
         return temp;
@@ -73,10 +72,7 @@ export const MessageStateProvider = ({ children }) => {
         text: sendMessage,
       });
     } else {
-      response = await MessageService.postMessages(
-        selectedIndex,
-        sendMessage
-      );
+      response = await MessageService.postMessages(selectedIndex, sendMessage);
     }
     setMessages((prev) => {
       prev[selectedIndex].messages.push(response);

@@ -8,7 +8,7 @@ import MessageState from "./contexts/messageState.context";
 const ChatMessage = () => {
 
     const { myProfile } = useContext(AuthState);
-    const { messages, setMessages, showMessage,setShowMessage ,selectedIndex ,sendMessageSubmit, sendMessage, setSendMessage} = useContext(MessageState);
+    const { showMessage,sendMessageSubmit, sendMessage, setSendMessage} = useContext(MessageState);
     
 
     const formatedDate = (dateString) => {

@@ -8,7 +8,7 @@ import MessageState from "./contexts/messageState.context";
 const ChatList = () => {
 
     const { myProfile} = useContext(AuthState);
-    const { messages, setMessages, conversations, setConversations, selectedIndex, setSelectedIndex ,showMessage, setShowMessage} = useContext(MessageState);
+    const { messages, setMessages, conversations, setConversations, selectedIndex, setSelectedIndex , setShowMessage} = useContext(MessageState);
 
     useEffect(() => {
         (async () => {
@@ -16,15 +16,6 @@ const ChatList = () => {
             setConversations(res);
         })()
     }, []);
-
-    // const setChatIndex = async (conversationGroupId)=>{
-    //     setSelectedIndex(conversationGroupId);
-    //     const findConversationId = conversations?.filter((conversation) => conversation?._id === selectedIndex)
-    //     if(!findConversationId){
-    //         const res = await MessageService.getMessage(1, 100, conversationGroupId);
-    //         setShowMessage(res);
-    //     }
-    // }   
 
     useEffect(()=>{
 
